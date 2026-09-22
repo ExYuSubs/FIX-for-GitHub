@@ -467,7 +467,7 @@ $lastChecked = date("d-m-Y H:i:s", utc_to_tz_time($row["last_action"]));
     justify-content: space-between;
     gap: 15px;
     padding: 12px 0 16px;
-    border-bottom: 1px solid rgba(255,255,255,.12);
+    border-bottom: 1px solid var(--border);
     margin-bottom: 14px;
 }
 .tt-details-title {
@@ -490,8 +490,8 @@ $lastChecked = date("d-m-Y H:i:s", utc_to_tz_time($row["last_action"]));
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: rgba(255,255,255,.035);
-    border-radius: 3px;
+    background: var(--surface-2);
+    border-radius: var(--radius);
 }
 .tt-summary-poster img {
     display: block;
@@ -508,25 +508,19 @@ $lastChecked = date("d-m-Y H:i:s", utc_to_tz_time($row["last_action"]));
 .tt-summary-info {
     min-width: 0;
 }
-.tt-summary-row {
-    display: grid;
-    grid-template-columns: 170px minmax(0,1fr);
-    min-height: 30px;
-    align-items: center;
-    padding: 5px 12px;
-    border-bottom: 1px solid rgba(255,255,255,.055);
+.tt-summary-table {
+    width: 100%;
 }
-.tt-summary-row:nth-child(odd) {
-    background: rgba(255,255,255,.055);
+.tt-summary-table td.css {
+    width: 170px;
+    white-space: nowrap;
 }
-.tt-summary-label {
-    font-weight: 700;
-}
-.tt-summary-value {
+.tt-summary-table td.css-right {
     overflow-wrap: anywhere;
+    text-align: left;
 }
-.tt-stat-green { color: #4da62a; font-weight: 700; }
-.tt-stat-red { color: #ff3333; font-weight: 700; }
+.tt-stat-green { color: var(--success); font-weight: 700; }
+.tt-stat-red { color: var(--danger); font-weight: 700; }
 .tt-download-row {
     display: flex;
     flex-wrap: wrap;
@@ -544,30 +538,32 @@ $lastChecked = date("d-m-Y H:i:s", utc_to_tz_time($row["last_action"]));
     cursor: pointer;
 }
 .tt-download-button {
-    background: #5a9f2c;
-    color: #fff !important;
+    background: var(--success);
+    color: var(--text-on-accent) !important;
 }
 .tt-secondary-button {
     background: transparent;
-    border: 1px solid rgba(255,255,255,.18);
+    color: var(--text);
+    border: 1px solid var(--border-strong);
 }
 .tt-scrape-form {
     display: inline-block;
     margin: 0;
 }
 .tt-scrape-form input[type="submit"] {
-    border: 1px solid rgba(255,255,255,.18);
+    border: 1px solid var(--border-strong);
     background: transparent;
+    color: var(--text);
 }
 .tt-section-spacer { margin: 18px 0; }
 .tt-trailer {
     margin: 18px 0 24px;
 }
 .tt-trailer-box {
-    background: rgba(0,0,0,.25);
+    background: var(--bg-soft);
     padding: 10px;
-    border: 1px solid rgba(255,255,255,.10);
-    border-radius: 4px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
 }
 .tt-trailer-box iframe {
     display: block;
@@ -584,9 +580,10 @@ $lastChecked = date("d-m-Y H:i:s", utc_to_tz_time($row["last_action"]));
 }
 .tt-poster-links a {
     padding: 8px 14px;
-    border: 1px solid rgba(255,255,255,.16);
+    border: 1px solid var(--border-strong);
     border-radius: 18px;
     text-decoration: none;
+    color: var(--text);
 }
 .tt-images-grid {
     display: grid;
@@ -617,27 +614,27 @@ $lastChecked = date("d-m-Y H:i:s", utc_to_tz_time($row["last_action"]));
     gap: 6px;
     margin: 0 0 15px;
     padding: 0;
-    border-bottom: 1px solid rgba(255,255,255,.12);
+    border-bottom: 1px solid var(--border);
 }
 .tt-tab-button {
     display: inline-block;
-    border: 1px solid rgba(255,255,255,.12);
+    border: 1px solid var(--border);
     border-bottom: 0;
-    background: rgba(255,255,255,.035);
+    background: var(--surface);
     color: inherit;
     padding: 10px 15px;
-    border-radius: 5px 5px 0 0;
+    border-radius: var(--radius) var(--radius) 0 0;
     cursor: pointer;
     font: inherit;
     font-weight: 600;
     text-decoration: none !important;
     transition: .15s ease;
 }
-.tt-tab-button:hover { background: rgba(255,255,255,.08); }
+.tt-tab-button:hover { background: var(--accent-soft); }
 .tt-tab-button.active {
-    background: rgba(255,255,255,.10);
-    border-color: rgba(255,255,255,.20);
-    box-shadow: inset 0 -2px 0 currentColor;
+    background: var(--accent-soft);
+    border-color: var(--border-strong);
+    box-shadow: inset 0 -2px 0 var(--accent);
 }
 .tt-tab-button i { margin-right: 5px; }
 .tt-tab-panel { display: block; visibility: visible; }
@@ -653,7 +650,6 @@ $lastChecked = date("d-m-Y H:i:s", utc_to_tz_time($row["last_action"]));
     .tt-summary { grid-template-columns: 1fr; }
     .tt-summary-poster { min-height: 0; }
     .tt-summary-poster img { max-width: 260px; }
-    .tt-summary-row { grid-template-columns: 125px minmax(0,1fr); }
     .tt-images-grid { grid-template-columns: 1fr; }
     .tt-details-head { align-items: flex-start; flex-direction: column; }
 }
@@ -702,83 +698,85 @@ $lastChecked = date("d-m-Y H:i:s", utc_to_tz_time($row["last_action"]));
                      alt="<?php echo $posterTopAlt; ?>"
                      title="<?php echo $posterTopAlt; ?>" class="rip">
             <?php else: ?>
-                <div class="tt-no-poster"><i class="fa-solid fa-photo-film fa-10x" style="color:orange;"></i> <br> No poster image</div>
+                <div class="tt-no-poster"><i class="fa-solid fa-photo-film fa-10x" style="color: var(--accent);"></i> <br> No poster image</div>
             <?php endif; ?>
         </div>
 
         <div class="tt-summary-info">
-            <div class="tt-summary-row">
-                <div class="tt-summary-label">Category</div>
-                <div class="tt-summary-value"><?php echo htmlspecialchars($categoryText, ENT_QUOTES, 'UTF-8'); ?></div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label">Added</div>
-                <div class="tt-summary-value"><?php echo $addedDate; ?></div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label">Size</div>
-                <div class="tt-summary-value"><?php echo mksize($row["size"]); ?></div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label">Peers</div>
-                <div class="tt-summary-value">
+            <table class="tt-summary-table" cellpadding="5" cellspacing="0" border="0">
+            <tr>
+                <td class="css">Category</td>
+                <td class="css-right"><?php echo htmlspecialchars($categoryText, ENT_QUOTES, 'UTF-8'); ?></td>
+            </tr>
+            <tr>
+                <td class="css">Added</td>
+                <td class="css-right"><?php echo $addedDate; ?></td>
+            </tr>
+            <tr>
+                <td class="css">Size</td>
+                <td class="css-right"><?php echo mksize($row["size"]); ?></td>
+            </tr>
+            <tr>
+                <td class="css">Peers</td>
+                <td class="css-right">
                     <?php echo number_format($peerCount); ?>
                     (<?php echo number_format($row["seeders"]); ?> Seeders and <?php echo number_format($row["leechers"]); ?> Leechers)
-                </div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label">Downloaded</div>
-                <div class="tt-summary-value"><?php echo number_format($row["times_completed"]); ?> times</div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label">Uploader</div>
-                <div class="tt-summary-value"><?php echo $uploaderHtml; ?></div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label">Comments</div>
-                <div class="tt-summary-value"><?php echo number_format($commentCount); ?></div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label">Tags</div>
-                <div class="tt-summary-value">—</div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label">Seeders</div>
-                <div class="tt-summary-value tt-stat-green"><?php echo number_format($row["seeders"]); ?></div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label">Leechers</div>
-                <div class="tt-summary-value tt-stat-red"><?php echo number_format($row["leechers"]); ?></div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label"><?php echo T_("LANG"); ?></div>
-                <div class="tt-summary-value">
+                </td>
+            </tr>
+            <tr>
+                <td class="css">Downloaded</td>
+                <td class="css-right"><?php echo number_format($row["times_completed"]); ?> times</td>
+            </tr>
+            <tr>
+                <td class="css">Uploader</td>
+                <td class="css-right"><?php echo $uploaderHtml; ?></td>
+            </tr>
+            <tr>
+                <td class="css">Comments</td>
+                <td class="css-right"><?php echo number_format($commentCount); ?></td>
+            </tr>
+            <tr>
+                <td class="css">Tags</td>
+                <td class="css-right">—</td>
+            </tr>
+            <tr>
+                <td class="css">Seeders</td>
+                <td class="css-right tt-stat-green"><?php echo number_format($row["seeders"]); ?></td>
+            </tr>
+            <tr>
+                <td class="css">Leechers</td>
+                <td class="css-right tt-stat-red"><?php echo number_format($row["leechers"]); ?></td>
+            </tr>
+            <tr>
+                <td class="css"><?php echo T_("LANG"); ?></td>
+                <td class="css-right">
                     <?php echo htmlspecialchars($languageText, ENT_QUOTES, 'UTF-8'); ?>
                     <?php if (!empty($row["lang_image"])): ?>
                         &nbsp;<img border="0" src="<?php echo $site_config['SITEURL']; ?>/images/languages/<?php echo htmlspecialchars($row["lang_image"], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($languageText, ENT_QUOTES, 'UTF-8'); ?>">
                     <?php endif; ?>
-                </div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label"><?php echo T_("INFO_HASH"); ?></div>
-                <div class="tt-summary-value"><?php echo $infoHashText; ?></div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label"><?php echo T_("LAST_CHECKED"); ?></div>
-                <div class="tt-summary-value"><?php echo $lastChecked; ?></div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label"><?php echo T_("VIEWS"); ?></div>
-                <div class="tt-summary-value"><?php echo number_format($row["views"]); ?></div>
-            </div>
-            <div class="tt-summary-row">
-                <div class="tt-summary-label"><?php echo T_("HITS"); ?></div>
-                <div class="tt-summary-value"><?php echo number_format($row["hits"]); ?></div>
-            </div>
-            <div class="tt-summary-row" style="align-items:flex-start;">
-                <div class="tt-summary-label"><?php echo T_("DESCRIPTION"); ?></div>
-                <div class="tt-summary-value"><?php echo format_comment($row["descr"]); ?></div>
-            </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="css"><?php echo T_("INFO_HASH"); ?></td>
+                <td class="css-right"><?php echo $infoHashText; ?></td>
+            </tr>
+            <tr>
+                <td class="css"><?php echo T_("LAST_CHECKED"); ?></td>
+                <td class="css-right"><?php echo $lastChecked; ?></td>
+            </tr>
+            <tr>
+                <td class="css"><?php echo T_("VIEWS"); ?></td>
+                <td class="css-right"><?php echo number_format($row["views"]); ?></td>
+            </tr>
+            <tr>
+                <td class="css"><?php echo T_("HITS"); ?></td>
+                <td class="css-right"><?php echo number_format($row["hits"]); ?></td>
+            </tr>
+            <tr>
+                <td class="css" valign="top"><?php echo T_("DESCRIPTION"); ?></td>
+                <td class="css-right" valign="top"><?php echo format_comment($row["descr"]); ?></td>
+            </tr>
+            </table>
 
             <div class="tt-download-row">
                 <?php if ($row["banned"] == "yes"): ?>
@@ -789,7 +787,7 @@ $lastChecked = date("d-m-Y H:i:s", utc_to_tz_time($row["last_action"]));
 
                     <?php if ($row["external"] != "yes" && $row["freeleech"] == "1"): ?>
                         <span class="tt-secondary-button" style="padding:10px 20px;">
-                            <font color="#ff0000"><?php echo T_("FREE_LEECH_MSG"); ?></font>
+                            <span style="color: var(--danger);"><?php echo T_("FREE_LEECH_MSG"); ?></span>
                         </span>
                     <?php endif; ?>
                 <?php endif; ?>
@@ -1026,7 +1024,7 @@ $writer = !empty($_data->Writer) ? $_data->Writer : "N/A";
                             <b>Trailer</b><br>
                             No IMDb/YouTube trailer was found.
                             <?php if (!empty($youtubeApiError) && !empty($CURUSER['edit_torrents'])): ?>
-                                <br><small style="color:#d88;">YouTube API: <?php echo htmlspecialchars($youtubeApiError, ENT_QUOTES, 'UTF-8'); ?></small>
+                                <br><small style="color: var(--danger);">YouTube API: <?php echo htmlspecialchars($youtubeApiError, ENT_QUOTES, 'UTF-8'); ?></small>
                             <?php endif; ?>
                             <?php if (!empty($CURUSER['edit_torrents'])): ?>
                                 <br><small><a href="torrents-details.php?id=<?php echo $id; ?>&amp;tab=trailer&amp;youtube_refresh=1">Refresh trailer search</a></small>
@@ -1150,8 +1148,8 @@ if (mysqli_num_rows($tres) > 1){
     echo '<th class="table_head">URL</th><th class="table_head">'.T_("SEEDERS").'</th><th class="table_head">'.T_("LEECHERS").'</th><th class="table_head">'.T_("COMPLETED").'</th></tr>';
     $x = 1;
     while ($trow = mysqli_fetch_assoc($tres)) {
-        $colour = $trow["online"] == "yes" ? "green" : "red";
-        echo "<tr class=\"table_col$x\"><td class='css'><font color=\"$colour\"><b>".htmlspecialchars($trow['url'])."</b></font></td><td align=\"center\" class='css-right'>".number_format($trow["seeders"])."</td><td align=\"center\" class='css'>".number_format($trow["leechers"])."</td><td align=\"center\" class='css-right'>".number_format($trow["times_completed"])."</td></tr>";
+        $colour = $trow["online"] == "yes" ? "var(--success)" : "var(--danger)";
+        echo "<tr class=\"table_col$x\"><td class='css'><b style=\"color:$colour;\">".htmlspecialchars($trow['url'])."</b></td><td align=\"center\" class='css-right'>".number_format($trow["seeders"])."</td><td align=\"center\" class='css'>".number_format($trow["leechers"])."</td><td align=\"center\" class='css-right'>".number_format($trow["times_completed"])."</td></tr>";
         $x = $x == 1 ? 2 : 1;
     }
     echo '</table></div>';

@@ -1,12 +1,12 @@
 <?php
-
 #================================#
-#       TorrentTrader 3.8.3      #
-#  http://torrenttrader.uk       #
+#       TorrentTrader 3.00       #
+#  http://www.torrenttrader.uk   #
 #--------------------------------#
 #       Created by M-Jay         #
-#       Modified by MicroMonkey, #
-#       Coco, Botanicar          #
+#       Modified by Botanicar    #
+#   Refurbished for PHP 8.3 /    #
+#   MariaDB 10.11 + Public-only  #
 #================================#
 
 require_once("backend/functions.php");
@@ -323,12 +323,120 @@ if (!empty($site_config['SHOUTBOX'])) {
         /* If you do change the refresh interval, you should also change index.php printf(T_("SHOUTBOX_REFRESH"), 5) the 5 is in minutes */
         ?>
         <meta http-equiv="refresh" content="300" />
-        <link rel="stylesheet" type="text/css" href="<?php echo $site_config['SITEURL']; ?>/themes/<?php echo $THEME; ?>/theme.css" />
-        <script type="text/javascript" src="<?php echo $site_config['SITEURL']; ?>/backend/java_klappe.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $site_config['SITEURL']; ?>/themes/<?php echo $THEME; ?>/theme-themable.css" />
+
+<style type="text/css">
+html,
+body.shoutbox_body {
+	background-color: var(--bg-soft) !important;
+	color: var(--text);
+}
+<style type="text/css">
+
+html,
+body.shoutbox_body {
+	background-color: var(--bg-soft) !important;
+	color: var(--text);
+}
+
+/* Shoutbox tabela */
+.shoutbox_table {
+	border-collapse: separate;
+	border-spacing: 0 5px;
+	width: 100%;
+}
+
+/* Svaki red ima svoju pozadinu i border */
+.shoutbox_table tr.shoutbox_alt > td {
+	background: var(--shout-row-alt-bg) !important;
+	border: 1px solid var(--shout-row-border) !important;
+}
+
+.shoutbox_table tr.shoutbox_noalt > td {
+	background: var(--shout-row-noalt-bg) !important;
+	border: 1px solid var(--shout-row-border) !important;
+}
+
+.shoutbox_date {
+	display: inline-block;
+	background: var(--shout-date-bg);
+	padding: 2px 5px;
+	margin-right: 3px;
+	border: 1px solid var(--shout-date-border);
+	border-radius: 3px;
+}
+
+.shoutbox_user {
+	display: inline-block;
+	background: var(--shout-user-bg);
+	padding: 2px 5px;
+	margin-right: 3px;
+	border: 1px solid var(--shout-user-border);
+	border-radius: 3px;
+}
+
+.shoutbox_actions {
+	display: inline-block;
+	background: var(--shout-actions-bg);
+	padding: 2px 5px;
+	margin-right: 3px;
+	border: 1px solid var(--shout-actions-border);
+	border-radius: 3px;
+}
+
+.shoutbox_message {
+	display: inline-block;
+	background: var(--shout-message-bg);
+	padding: 2px 6px;
+	margin-left: 2px;
+	border: 1px solid var(--shout-message-border);
+	border-radius: 3px;
+}
+</style>
+
+
+<script type="text/javascript">
+(function () {
+
+	function syncShoutboxTheme() {
+		try {
+			var parentTheme = window.parent.document.documentElement.getAttribute('data-theme');
+
+			if (parentTheme === 'light' || parentTheme === 'dark') {
+				document.documentElement.setAttribute('data-theme', parentTheme);
+			}
+		} catch (e) {
+			/* iframe fallback - nothing to do */
+		}
+	}
+
+	/* Initial theme */ 
+	syncShoutboxTheme();
+
+	/* Follow the main page when the toggle changes */
+	try {
+		var parentHtml = window.parent.document.documentElement;
+
+		var observer = new MutationObserver(function () {
+			syncShoutboxTheme();
+		});
+
+		observer.observe(parentHtml, {
+			attributes: true,
+			attributeFilter: ['data-theme']
+		});
+	} catch (e) {
+		/* iframe fallback - nothing to do */
+	}
+
+})();
+</script>
+
+<script type="text/javascript" src="<?php echo $site_config['SITEURL']; ?>/backend/java_klappe.js"></script>
         </head>
         <body class="shoutbox_body">
         <?php
-        echo '<div class="shoutbox_contain"><table border="0" style="width: 100%; table-layout:fixed">';
+        echo '<div class="shoutbox_contain"><table class="shoutbox_table" border="0" style="width: 100%; table-layout: fixed;">';
         // rooms removed - public only, no room selector needed
     } else {
         // ---- SHOUTBOX HISTORY PAGE ----
@@ -380,37 +488,104 @@ if (!empty($site_config['SHOUTBOX'])) {
         error_log('Shoutbox list query failed: ' . $query);
     }
 
-    while ($result && ($row = mysqli_fetch_assoc($result))) {
-        if ($alt) {
-            echo '<tr class="shoutbox_noalt">';
-            $alt = false;
-        } else {
-            echo '<tr class="shoutbox_alt">';
-            $alt = true;
-        }
+while ($result && ($row = mysqli_fetch_assoc($result))) {
 
-        $date = "<font style='color:#4dff55'>" . date(' d M. H:i', utc_to_tz_time($row['date'])) . "</font> &bull;";
-
-        $replyUser = addslashes($row['user']);
-        $reply = "<a href=\"javascript:Reply_code('&bull;&nbsp;" . $replyUser . ",','shoutboxform','message')\"><img src ='" . $site_config['SITEURL'] . "/images/blue reply.png' height='12' border='0' title='" . T_("REPLY") . "'></a>";
-
-        $edit = $canEdit
-            ? "&nbsp;<a href='" . $site_config['SITEURL'] . "/shoutedit.php?action=edit&amp;msgid=" . (int) $row['msgid'] . "'><img src ='" . $site_config['SITEURL'] . "/images/edit.png' height='12' border='0' title='" . T_("EDIT") . "'></a>"
-            : "";
-
-        $delete = $canEdit
-            ? "&nbsp;<a href='" . $site_config['SITEURL'] . "/shoutbox.php?del=" . (int) $row['msgid'] . "'><img src ='" . $site_config['SITEURL'] . "/images/delete.png' height='12' border='0' title='" . T_("DELETE") . "'></a>&nbsp;"
-            : "";
-
-        if ($row['user'] == "System") {
-            $name = '<font color=' . $site_config['system_color'] . '> System </font>&nbsp;';
-        } else {
-            $name = '<a href="' . $site_config['SITEURL'] . '/account-details.php?id=' . (int) $row['userid'] . '" target="_parent"><b>' . class_user($row['user']) . '</b></a>&nbsp;';
-        }
-
-        echo '<tr><td style="font-size:12px">' . $date . ' ' . $name . ' ' . $edit . ' ' . $delete . '' . $reply . ' &nbsp;' . nl2br(format_comment($row['message']));
-        echo '</td></tr>';
+    if ($alt) {
+        echo '<tr class="shoutbox_noalt">';
+        $alt = false;
+    } else {
+        echo '<tr class="shoutbox_alt">';
+        $alt = true;
     }
+
+    /* ---------------------------------------------------------
+       DATE
+       --------------------------------------------------------- */
+    $date = "<span class='shoutbox_date'>"
+        . date(' d M. H:i', utc_to_tz_time($row['date']))
+        . "</span>";
+
+    /* ---------------------------------------------------------
+       USER
+       --------------------------------------------------------- */
+    if ($row['user'] == "System") {
+
+        $name = "<span class='shoutbox_user'>System</span>";
+
+    } else {
+
+        $name = "<a class='shoutbox_user' href='"
+            . $site_config['SITEURL']
+            . "/account-details.php?id="
+            . (int) $row['userid']
+            . "' target='_parent'><b>"
+            . class_user($row['user'])
+            . "</b></a>";
+    }
+
+    /* ---------------------------------------------------------
+       EDIT / DELETE / REPLY
+       --------------------------------------------------------- */
+    $replyUser = addslashes($row['user']);
+
+    $reply = "<a href=\"javascript:Reply_code('&bull;&nbsp;"
+        . $replyUser
+        . ",','shoutboxform','message')\">"
+        . "<img src='" . $site_config['SITEURL']
+        . "/images/blue reply.png' height='12' border='0' title='"
+        . T_("REPLY")
+        . "'></a>";
+
+    $edit = $canEdit
+        ? "<a href='"
+        . $site_config['SITEURL']
+        . "/shoutedit.php?action=edit&amp;msgid="
+        . (int) $row['msgid']
+        . "'>"
+        . "<img src='" . $site_config['SITEURL']
+        . "/images/edit.png' height='12' border='0' title='"
+        . T_("EDIT")
+        . "'></a>"
+        : "";
+
+    $delete = $canEdit
+        ? "<a href='"
+        . $site_config['SITEURL']
+        . "/shoutbox.php?del="
+        . (int) $row['msgid']
+        . "'>"
+        . "<img src='" . $site_config['SITEURL']
+        . "/images/delete.png' height='12' border='0' title='"
+        . T_("DELETE")
+        . "'></a>"
+        : "";
+
+    $actions = "<span class='shoutbox_actions'>"
+        . $edit
+        . $delete
+        . $reply
+        . "</span>";
+
+    /* ---------------------------------------------------------
+       MESSAGE
+       --------------------------------------------------------- */
+    $message = "<span class='shoutbox_message'>"
+        . nl2br(format_comment($row['message']))
+        . "</span>";
+
+    /* ---------------------------------------------------------
+       OUTPUT
+       --------------------------------------------------------- */
+    echo '<td style="font-size:12px">'
+        . $date
+        . ' '
+        . $name
+        . ' '
+        . $actions
+        . ' '
+        . $message
+        . '</td></tr>';
+}
     ?>
 
     </table>
@@ -427,9 +602,9 @@ if (!empty($site_config['SHOUTBOX'])) {
             echo "<table width='100%' align='center' border='0' cellpadding='1' cellspacing='0'><tr class='shoutbox_messageboxback'><td align='center'>";
             echo "<input type='text' name='message' class='btnChat' />&nbsp;";
             echo "<input type='submit' name='submit' value='&nbsp;" . T_("SHOUT") . "&nbsp;'>&nbsp; &nbsp;";
-            echo '<a href="javascript:PopSmiles(\'shoutboxform\', \'message\');"><img src="images/smilies/grin.png" border="0" title="' . T_("MORE_SMILIES") . '"></a>&nbsp;';
-            echo "<a href='shoutbox.php?t=" . time() . "'><img src='images/refresh.png' alt='' title='" . T_("REFRESH") . "' border='0'></a>&nbsp;";
-            echo "<a href='" . $site_config['SITEURL'] . "/shoutbox.php?history=1' target='_blank'><img src='images/history.png' alt='' title='" . T_("HISTORY") . "' border='0'></a>";
+            echo '<a href="javascript:PopSmiles(\'shoutboxform\', \'message\');"><img src="images/smilies/grin.gif" border="0" title="' . T_("MORE_SMILIES") . '"></a>&nbsp;';
+            echo "<a href='shoutbox.php?t=" . time() . "'><img src='images/refresh.gif' alt='' title='" . T_("REFRESH") . "' border='0'></a>&nbsp;";
+            echo "<a href='" . $site_config['SITEURL'] . "/shoutbox.php?history=1' target='_blank'><img src='images/history.gif' alt='' title='" . T_("HISTORY") . "' border='0'></a>";
             echo "</td></tr></table>";
             echo quickbbshout();
             echo "</form>";

@@ -289,10 +289,10 @@ function latestforumposts() {
             $subject = "<a href='forums.php?action=viewtopic&amp;topicid=$topicid'><b>" . stripslashes(encodehtml($topicarr["subject"])) . "</b></a>";
 
             print("<tr class='f-row'><td class='f-img' width='100%'>$subject</td>".
-            "<td class='alt2' align='center'>$replies</td>".
-            "<td class='alt3' align='center'>$views</td>".
-            "<td class='alt2' align='center'>$author</td>".
-            "<td class='alt3' align='right'><small>by&nbsp;$username<br /></small><small style='white-space: nowrap'>$added</small></td></tr>");
+            "<td class='alt2' align='center'><small>$replies</small></td>".
+            "<td class='alt3' align='center'><small>$views</small></td>".
+            "<td class='alt2' align='center'><small>$author</small></td>".
+            "<td class='alt3' align='right'><small>by&nbsp;$username<br /> $added</small></td></tr>");
         }
     }
     print("</table></div><br />");

@@ -500,7 +500,7 @@ if ($action == "viewtopic") {
             $usersignature = "";
             $userdownloaded = "0";
             $useruploaded = "0";
-            $avatar = "<div class='forum-avatar'><i class='fa fa-user-circle'></i></div>";
+            $avatar = "<span class='btn btn-default forum-post-btn'><i class='fa-regular fa-circle-user fa-10x'></i></span>";
             $nposts = "-";
             $tposts = "-";
         } else {
@@ -528,7 +528,7 @@ if ($action == "viewtopic") {
             $title = format_comment($arr2["title"]);
             $donated = $arr2['donated'];
             $by = "<a href='account-details.php?id=$posterid'>$postername</a>" . ($donated > 0 ? "<i class='fa fa-star forum-donated' title='Donated'></i>" : "");
-            $avatar = "<div class='forum-avatar'><i class='fa fa-user-circle'></i></div>";
+            $avatar = "<span><i class='fa-regular fa-circle-user' style='font-size: 80px !important; color: silver !important;'></i></span>";
         }
 
         print("<a id='post$postid'></a>");
@@ -565,11 +565,11 @@ if ($action == "viewtopic") {
         print("<tr valign='top'><td width='150' align='left' class='comment-details'>
             <center><i>$title</i></center>
             <br /><center>$avatar</center>
-            <br />Uploaded: $useruploaded<br />
-            Downloaded: $userdownloaded<br />
-            Posts: $forumposts<br /><br />
-            Ratio: $userratio<br />
-            Location: $usercountry<br /><br />
+            <br /><small>Uploaded: $useruploaded</small><br />
+            <small>Downloaded: $userdownloaded</small><br />
+            <small>Posts: $forumposts</small><br /><br />
+            <small>Ratio: $userratio</small><br />
+            <small>Location: $usercountry</small><br />
         </td>");
 
         print("<td class='comment'><br />$body<br />");
@@ -1092,9 +1092,9 @@ if ($action == "viewforum") {
 
     print("<div class='forum-status-legend'>");
     print("<span class='forum-status-legend-label'>Status:</span>");
-    print("<span class='btn btn-sm forum-status-btn forum-status-new' title='New posts'><i class='fa fa-folder-open'></i></span><span>New posts</span>");
-    print("<span class='btn btn-sm forum-status-btn forum-status-old' title='No new posts'><i class='fa fa-folder'></i></span><span>No new posts</span>");
-    print("<span class='btn btn-sm forum-status-btn forum-status-locked' title='".T_("FORUMS_LOCKED")."'><i class='fa fa-lock'></i></span><span>".T_("FORUMS_LOCKED")."</span>");
+    print("<span class='btn btn-sm forum-status-btn forum-status-new' title='New posts'><i class='fa fa-folder-open'></i>&nbsp; &nbsp; New posts</span>");
+    print("<span class='btn btn-sm forum-status-btn forum-status-old' title='No new posts'><i class='fa fa-folder'></i>&nbsp; &nbsp; No new posts</span>");
+    print("<span class='btn btn-sm forum-status-btn forum-status-locked' title='".T_("FORUMS_LOCKED")."'><i class='fa fa-lock'></i>&nbsp; &nbsp; ".T_("FORUMS_LOCKED")."</span>");
     print("</div>");
 
     $arr = get_forum_access_levels($forumid) or die;
@@ -1316,10 +1316,10 @@ while ($forums_arr = mysqli_fetch_assoc($forums_res)) {
 print("</table></div>");
 
 print("<table cellspacing='0' cellpadding='3'><tr valign='middle'>\n");
-print("<td><i class='fa fa-folder-open forum-key-icon'></i></td><td>New posts</td>\n");
-print("<td><i class='fa fa-folder forum-key-icon'></i></td><td>No New posts</td>\n");
-print("<td><i class='fa fa-lock forum-key-icon'></i></td><td>".T_("FORUMS_LOCKED")." topic</td>\n");
-print("<td><i class='fa fa-thumb-tack forum-key-icon'></i></td><td>".T_("FORUMS_STICKY")." topic</td>\n");
+print("<span class='btn btn-sm forum-status-btn forum-status-new'><i class='fa fa-folder-open forum-key-icon'></i>&nbsp; &nbsp; New posts </span>");
+print("<span class='btn btn-sm forum-status-btn forum-status-old'><i class='fa fa-folder forum-key-icon'></i>&nbsp; &nbsp;  No New posts </span>");
+print("<span class='btn btn-sm forum-status-btn forum-status-locked'><i class='fa fa-lock forum-key-icon'></i>&nbsp; &nbsp;  ".T_("FORUMS_LOCKED")." topic </span>");
+print("<span class='btn btn-sm forum-status-btn forum-status-old'><i class='fa fa-thumb-tack forum-key-icon'></i>&nbsp; &nbsp;  ".T_("FORUMS_STICKY")." topic </span>");
 print("</tr></table>\n");
 
 $r = SQL_Query_exec("SELECT users.id, users.username, COUNT(forum_posts.userid) as num FROM forum_posts LEFT JOIN users ON users.id = forum_posts.userid GROUP BY userid ORDER BY num DESC LIMIT 10");

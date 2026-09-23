@@ -235,3 +235,99 @@
 	--muted: #92a2bf;
 	--accent: #f0b86a;
 }
+
+/* ===== Varijable - light (default) ===== */
+[data-theme="light"],
+:root {
+    --fp-btn-bg: #f7f7f7;
+    --fp-btn-border: #ccc;
+    --fp-btn-text: #333;
+    --fp-btn-hover-text: #fff;
+
+    --fp-edit-color: #6c757d;
+    --fp-delete-color: #dc3545;
+    --fp-report-color: #b38600;
+    --fp-report-hover-text: #333;
+    --fp-icon-color: #007bff;
+
+    --fp-date-bg: #eee;
+    --fp-date-border: #ddd;
+    --fp-date-text: #666;
+}
+
+/* ===== Varijable - dark mode ===== */
+[data-theme="dark"] {
+    --fp-btn-bg: #2a2a2a;
+    --fp-btn-border: #555;
+    --fp-btn-text: #ddd;
+    --fp-btn-hover-text: #fff;
+
+    --fp-edit-color: #adb5bd;
+    --fp-delete-color: #ff6b6b;
+    --fp-report-color: #ffd35c;
+    --fp-report-hover-text: #1a1a1a;
+    --fp-icon-color: #4dabf7;
+
+    --fp-date-bg: #333;
+    --fp-date-border: #444;
+    --fp-date-text: #bbb;
+}
+
+/* ===== Dugmici - koriste varijable ===== */
+.fp-btn {
+    display: inline-block;
+    padding: 3px 9px;
+    margin-right: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+    text-decoration: none;
+    border-radius: 4px;
+    border: 1px solid var(--fp-btn-border);
+    background: var(--fp-btn-bg);
+    color: var(--fp-btn-text);
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.fp-btn:hover {
+    color: var(--fp-btn-hover-text);
+    text-decoration: none;
+}
+.fp-btn i { margin-right: 4px; }
+
+.fp-btn-edit {
+    border-color: var(--fp-edit-color);
+    color: var(--fp-edit-color);
+}
+.fp-btn-edit:hover { background: var(--fp-edit-color); }
+
+.fp-btn-delete {
+    border-color: var(--fp-delete-color);
+    color: var(--fp-delete-color);
+}
+.fp-btn-delete:hover { background: var(--fp-delete-color); }
+
+.fp-btn-report {
+    border-color: var(--fp-report-color);
+    color: var(--fp-report-color);
+}
+.fp-btn-report:hover {
+    background: var(--fp-report-color);
+    color: var(--fp-report-hover-text);
+}
+
+.fp-btn-icon {
+    padding: 3px 7px;
+    border-color: var(--fp-icon-color);
+    color: var(--fp-icon-color);
+}
+.fp-btn-icon:hover { background: var(--fp-icon-color); }
+
+/* Datum */
+.fp-date {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    color: var(--fp-date-text);
+    background: var(--fp-date-bg);
+    border-radius: 10px;
+    border: 1px solid var(--fp-date-border);
+}

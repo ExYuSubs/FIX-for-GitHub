@@ -792,3 +792,18 @@ hr {
 		var(--hr-color-1)
 	);
 }
+
+.imdb-unavailable {
+    text-align: center;
+    padding: 50px 20px;
+    font-size: 13px;
+}
+
+.imdb-unavailable .fa-imdb {
+    display: block;
+    font-size: 80px;
+    color: gold;
+    margin-bottom: 15px;
+}
+
+

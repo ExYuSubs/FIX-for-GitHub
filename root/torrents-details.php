@@ -915,7 +915,7 @@ $lastChecked = date("d-m-Y H:i:s", utc_to_tz_time($row["last_action"]));
 
 
           ?>
-        <fieldset class="download">
+        <fieldset class="tt-imdb">
             <legend><b><?php echo T_("IMDB_SHORT"); ?></b> &bull; <?php echo $_data->Title; ?></legend>
             <table border="0" cellpadding="5" cellspacing="5" width="100%">
                 <tr>
@@ -990,9 +990,19 @@ $writer = !empty($_data->Writer) ? $_data->Writer : "N/A";
                     </td>
                 </tr>
             </table>
-        </fieldset>
-        <?php endif; ?>
+                </fieldset>
 
+        <?php else: ?>
+        <fieldset class="tt-imdb">
+            <legend><b><?php echo T_("IMDB_SHORT"); ?></b>  <?php echo $_data->Title; ?></legend>
+
+        <div class="imdb-unavailable tt-trailer-box">
+            <i class="fa-brands fa-imdb"></i>
+            <div> No IMDb data available right now. </div>
+        </div>
+
+        <?php endif; ?>
+                </fieldset>
         </div><!-- /tt-tab-imdb -->
 
         <div id="tt-tab-trailer" class="tt-tab-panel" role="tabpanel" style="display:<?php echo $activeTab === 'trailer' ? 'block' : 'none'; ?>;">
@@ -1020,7 +1030,7 @@ $writer = !empty($_data->Writer) ? $_data->Writer : "N/A";
                     </iframe>
                 <?php else: ?>
                     <div id="youtube-trailer-placeholder" style="min-height:120px; display:flex; align-items:center; justify-content:center; text-align:center; opacity:.75;">
-                        <div>
+                        <div><i class="fa-brands fa-youtube" style="font-size:80px;color:red;"></i><br>
                             <b>Trailer</b><br>
                             No IMDb/YouTube trailer was found.
                             <?php if (!empty($youtubeApiError) && !empty($CURUSER['edit_torrents'])): ?>
@@ -1037,9 +1047,9 @@ $writer = !empty($_data->Writer) ? $_data->Writer : "N/A";
 
         </div><!-- /tt-tab-trailer -->
 
-        <div id="tt-tab-posters" class="tt-tab-panel" role="tabpanel" style="display:<?php echo $activeTab === 'posters' ? 'block' : 'none'; ?>;">
+<div id="tt-tab-posters" class="tt-tab-panel" role="tabpanel" style="display:<?php echo $activeTab === 'posters' ? 'block' : 'none'; ?>;">
 
-        <table><tr><td height=5></td></tr></table>
+<table><tr><td height=5></td></tr></table>
 
 <?php
 echo "<br />";
@@ -1052,7 +1062,7 @@ if (!empty($row["poster"]) || !empty($row["poster2"])) {
     if (!empty($row["poster"])) {
         $poster1 = htmlspecialchars($row["poster"], ENT_QUOTES, 'UTF-8');
         echo "<div>";
-        echo "<a href='".$poster1."' target='_blank' rel='noopener'>";
+        echo "<a href='".$poster1."' rel='prettyPhoto[posters]' title='Poster 1'>";
         echo "<img src='".$poster1."' alt='Poster 1' class='poster' loading='lazy'>";
         echo "</a>";
         echo "<div class='tt-poster-links'><a href='".$poster1."' target='_blank' rel='noopener'>Poster 1 – open full size</a></div>";
@@ -1062,7 +1072,7 @@ if (!empty($row["poster"]) || !empty($row["poster2"])) {
     if (!empty($row["poster2"])) {
         $poster2 = htmlspecialchars($row["poster2"], ENT_QUOTES, 'UTF-8');
         echo "<div>";
-        echo "<a href='".$poster2."' target='_blank' rel='noopener'>";
+        echo "<a href='".$poster2."' rel='prettyPhoto[posters]' title='Poster 2'>";
         echo "<img src='".$poster2."' alt='Poster 2' class='poster' loading='lazy'>";
         echo "</a>";
         echo "<div class='tt-poster-links'><a href='".$poster2."' target='_blank' rel='noopener'>Poster 2 – open full size</a></div>";
@@ -1073,9 +1083,22 @@ if (!empty($row["poster"]) || !empty($row["poster2"])) {
     echo "</fieldset>";
     echo "<br />";
 }
-
 ?>
-        </div><!-- /tt-tab-posters -->
+</div><!-- /tt-tab-posters -->
+
+<script>
+jQuery(document).ready(function($){
+    $("a[rel^='prettyPhoto']").prettyPhoto({
+        theme: 'pp_default',
+        social_tools: false,
+        show_title: true,
+        allow_resize: true,   // slika se skalira prema veličini ekrana korisnika
+        deeplinking: false,
+        opacity: 0.85,
+        overlay_gallery: false
+    });
+});
+</script>
 
         <div id="tt-tab-stats" class="tt-tab-panel" role="tabpanel" style="display:<?php echo $activeTab === 'stats' ? 'block' : 'none'; ?>;">
 <fieldset class="tt-rating">
@@ -1310,6 +1333,8 @@ echo "<br /><br />";
         </div><!-- /tt-tab-stats -->
 
         <div id="tt-tab-comments" class="tt-tab-panel" role="tabpanel" style="display:<?php echo $activeTab === 'comments' ? 'block' : 'none'; ?>;">
+        <fieldset class="tt-comments">
+            <legend> <b>Comments</b> </legend>
 
 <?php
     //echo "<p align=center><a class=index href=torrents-comment.php?id=$id>" .T_("ADDCOMMENT"). "</a></p>\n";
@@ -1345,6 +1370,7 @@ echo "<br /><br />";
     }
 ?>
         </div><!-- /tt-tab-comments -->
+</fieldset>
         </div><!-- /tt-tab-panels -->
     </div><!-- /ttTorrentTabs -->
 
